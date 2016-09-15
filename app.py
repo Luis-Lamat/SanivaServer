@@ -1,8 +1,15 @@
 import requests
+import time
+from logger import *
 from flask import Flask, url_for, request, jsonify
 from bs4 import BeautifulSoup
 
 app = Flask(__name__)
+
+FIVE_MINUTES = 420
+time1 = time.time()
+time2 = time.time()
+resp = None
 
 @app.route('/')
 def api_root():
@@ -10,6 +17,16 @@ def api_root():
 
 @app.route('/machine_info.json')
 def api_machine_info():
+	# Return the same data for every 7 minute interval
+	global resp, time1, time2
+	if resp and time2 - time1 < FIVE_MINUTES:
+		Logger.log_time_diff(time2 - time1)
+		time2 = time.time()
+		return resp
+
+	# Reset times
+	time1 = time2 = time.time()
+
 	# Getting the whole html from the page
 	response = requests.get('http://95.209.150.208/eng/Status.asp')
 
