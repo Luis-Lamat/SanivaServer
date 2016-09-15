@@ -11,9 +11,27 @@ time1 = time.time()
 time2 = time.time()
 resp = None
 
+dorms = {
+	0: '95.209.150.208', # Kathrine Kollegiet
+	1: '77.75.166.66',	 # Porcelaenshaven
+	2: '95.209.150.175'  # Holger Danske
+}
+
 @app.route('/')
 def api_root():
-    return 'Welcome. Send a request to `/machine_info.json` to get a json response'
+    return '''
+    	<h1>Welcome</h1>
+    	Send a request to <code>`/machine_info.json`</code> to get a json 
+    	response of the machine statuses. <br>
+    	Send dorm number as a param called <code>`dorm`</code> to select the 
+    	dorm info (default is Kathrine Kollegiet). <br><br>
+    	Dorm numbers:
+		<ol>
+			<li> Kathrine Kollegiet </li>
+			<li> Porcelaenshaven </li>
+			<li> Holger Danske </li>
+		</ol>
+		'''
 
 @app.route('/machine_info.json')
 def api_machine_info():
